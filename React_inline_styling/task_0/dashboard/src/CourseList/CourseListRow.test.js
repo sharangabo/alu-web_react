@@ -1,23 +1,45 @@
 import React from "react";
-import CourseListRow from "./CourseListRow";
 import { render, screen } from "@testing-library/react";
+import CourseListRow from "./CourseListRow";
 
-describe("Course List row", () => {
-    it("should render the first and second if the isHeader is true", () => {
-        render(<CourseListRow isHeader={true} textFirstCell="First" textSecondCell="Second" />);
-        screen.getByText("First");
-        screen.getByText("Second");
-    });
+describe("CourseListRow component", () => {
+  it("renders the first and second cell if isHeader is true", () => {
+    render(<CourseListRow isHeader={true} textFirstCell="First" textSecondCell="Second" />);
+    
+    // Check if the text content for both header cells is rendered
+    expect(screen.getByText("First")).toBeInTheDocument();
+    expect(screen.getByText("Second")).toBeInTheDocument();
+  });
 
-    it("should render only the first element if the isHeader is true and the second element is null", () => {
-        render(<CourseListRow isHeader={true} textFirstCell="First" textSecondCell={null} />);
-        screen.getByText("First");
-    });
+  it("renders only the first cell if isHeader is true and textSecondCell is null", () => {
+    render(<CourseListRow isHeader={true} textFirstCell="First" textSecondCell={null} />);
+    
+    // Check if only the first cell is rendered
+    expect(screen.getByText("First")).toBeInTheDocument();
+    // Ensure no second cell is rendered
+    const secondCell = screen.queryByText("Second");
+    expect(secondCell).toBeNull();
+  });
 
-    it("should render the two element if the header is false", () => {
-        render(<CourseListRow isHeader={false} textFirstCell="First" textSecondCell="Second" />);
-        screen.getByText("First");
-        screen.getByText("Second"); 
-    })
+  it("renders two cells if isHeader is false", () => {
+    render(<CourseListRow isHeader={false} textFirstCell="First" textSecondCell="Second" />);
+    
+    // Check if both the first and second text in body are rendered
+    expect(screen.getByText("First")).toBeInTheDocument();
+    expect(screen.getByText("Second")).toBeInTheDocument();
+  });
 
-})
+  it("applies the correct background color for a header row", () => {
+    render(<CourseListRow isHeader={true} textFirstCell="First" textSecondCell="Second" />);
+    const row = screen.getByTestId("course-table-header").closest("tr");
+    
+    expect(row).toHaveStyle("background-color: #deb5b545");
+  });
+
+  it("applies the correct background color for a non-header row", () => {
+    render(<CourseListRow isHeader={false} textFirstCell="First" textSecondCell="Second" />);
+    const row = screen.getByTestId("course-table-body").closest("tr");
+    
+    expect(row).toHaveStyle("background-color: #f5f5f5ab");
+  });
+});
