@@ -1,4 +1,5 @@
 #count {
-	display: inline;
-	font-style: bold;
+    display: inline;
+    font-weight: bold;
+    margin: 0;
 }
