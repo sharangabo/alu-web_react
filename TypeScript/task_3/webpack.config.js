@@ -33,9 +33,5 @@ module.exports = {
   output: {
     filename: "bundle.js",
     path: path.resolve(__dirname, "dist")
-  },
-  // Ignore node_modules directory
-  watchOptions: {
-    ignored: /node_modules/
   }
 };

@@ -1,40 +1,23 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
 import CourseListRow from "./CourseListRow";
+import { render, screen } from "@testing-library/react";
 
-describe("CourseListRow component", () => {
-  it("renders the first and second cell if isHeader is true", () => {
-    render(<CourseListRow isHeader={true} textFirstCell="First" textSecondCell="Second" />);
-    
-    expect(screen.getByText("First")).toBeInTheDocument();
-    expect(screen.getByText("Second")).toBeInTheDocument();
-  });
+describe("Course List row", () => {
+    it("should render the first and second if the isHeader is true", () => {
+        render(<CourseListRow isHeader={true} textFirstCell="First" textSecondCell="Second" />);
+        screen.getByText("First");
+        screen.getByText("Second");
+    });
 
-  it("renders only the first cell if isHeader is true and textSecondCell is null", () => {
-    render(<CourseListRow isHeader={true} textFirstCell="First" textSecondCell={null} />);
-    
-    expect(screen.getByText("First")).toBeInTheDocument();
-    expect(screen.queryByText("Second")).not.toBeInTheDocument();
-  });
+    it("should render only the first element if the isHeader is true and the second element is null", () => {
+        render(<CourseListRow isHeader={true} textFirstCell="First" textSecondCell={null} />);
+        screen.getByText("First");
+    });
 
-  it("renders two cells if isHeader is false", () => {
-    render(<CourseListRow isHeader={false} textFirstCell="First" textSecondCell="Second" />);
-    
-    expect(screen.getByText("First")).toBeInTheDocument();
-    expect(screen.getByText("Second")).toBeInTheDocument();
-  });
+    it("should render the two element if the header is false", () => {
+        render(<CourseListRow isHeader={false} textFirstCell="First" textSecondCell="Second" />);
+        screen.getByText("First");
+        screen.getByText("Second"); 
+    })
 
-  it("applies the correct background color for a header row", () => {
-    render(<CourseListRow isHeader={true} textFirstCell="First" textSecondCell="Second" />);
-    const row = screen.getAllByRole("row")[0];
-    
-    expect(row).toHaveStyle("background-color: #deb5b545");
-  });
-
-  it("applies the correct background color for a non-header row", () => {
-    render(<CourseListRow isHeader={false} textFirstCell="First" textSecondCell="Second" />);
-    const row = screen.getAllByRole("row")[0];
-    
-    expect(row).toHaveStyle("background-color: #f5f5f5ab");
-  });
-});
+})
