@@ -1,45 +1,33 @@
+
 import React from "react";
 import { StyleSheet, css } from "aphrodite";
 
-function Login() {
+export default function Login() {
   return (
-    <div className={css(styles.login)}>
-      <p>Login to access the full dashboard</p>
-      <label htmlFor="email">Email:</label>
-      <input type="email" id="email" className={css(styles.loginInput)} />
-      <label htmlFor="password">Password:</label>
-      <input type="password" id="password" className={css(styles.loginInput)} />
-      <button>OK</button>
+    <div className={css(styles.appBody)} data-testid="App-body">
+      <p className={css(styles.text)}>Login to access the full dashboard</p>
+      <form action="">
+        <label htmlFor="email">
+          email:
+          <input type="email" data-testid="email" id="email" />
+        </label>
+        <label htmlFor="password">
+          password:
+          <input type="password" data-testid="password" id="password" />
+        </label>
+        <button>ok</button>
+      </form>
     </div>
   );
 }
 
-const screenSize = {
-  small: "@media screen and (max-width: 900px)",
-};
-
 const styles = StyleSheet.create({
-  login: {
-    margin: "50px",
-    flexGrow: 1,
-    [screenSize.small]: {
-      marginTop: "10px",
-      marginLeft: 0,
-      marginRight: 0,
-      marginBottom: 0,
-    },
+  appBody: {
+    flex: 1,
+    paddingLeft: "60px",
+    margin: "20px",
   },
-
-  loginInput: {
-    marginLeft: "10px",
-    marginRight: "20px",
-    [screenSize.small]: {
-      display: "block",
-      marginLeft: 0,
-      marginTop: "10px",
-      marginBottom: "10px",
-    },
+  text: {
+    fontSize: "32px",
   },
 });
-
-export default Login;

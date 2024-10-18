@@ -1,57 +1,33 @@
-import { shallow } from "enzyme";
 import React from "react";
 import Login from "./Login";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { StyleSheetTestUtils } from "aphrodite";
 
-describe("<Login />", () => {
-  beforeAll(() => {
-    StyleSheetTestUtils.suppressStyleInjection();
-  });
-  afterAll(() => {
-    StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
-  });
+StyleSheetTestUtils.suppressStyleInjection()
+describe("login", () => {
+    it("should render the login component", () => {
+        render(<Login />);
+        screen.getByTestId("email");
+        screen.getByTestId("password");
 
-  it("Login renders without crashing", () => {
-    const wrapper = shallow(<Login />);
-    expect(wrapper.exists()).toEqual(true);
-  });
-  it("Verify that the components render 3 input", () => {
-    const wrapper = shallow(<Login />);
-    wrapper.update();
-    expect(wrapper.find("div input")).toHaveLength(3);
-  });
-  it("Verify that the components render 2 label", () => {
-    const wrapper = shallow(<Login />);
-    wrapper.update();
-    expect(wrapper.find("div label")).toHaveLength(2);
-  });
+    })
 
-  it("Verify that the components render 2 label", () => {
-    const wrapper = shallow(<Login />);
-    const submitInput = wrapper.find("form input[type='submit']");
+    it("should disable the submit button when email or password is empty", () => {
+        render(<Login />);
+        const submitButton = screen.getByTestId("submit-button");
+        console.log(submitButton)
+        expect(submitButton).toHaveProperty('disabled', true);
 
-    expect(submitInput).toHaveLength(1);
-    expect(submitInput.prop("disabled")).toEqual(true);
-  });
+        // Simulate entering a value in the email input
+        const emailInput = screen.getByTestId("email");
+        fireEvent.change(emailInput, { target: { value: "test@example.com" } });
 
-  it("Verify that the components render 2 label", () => {
-    const wrapper = shallow(<Login />);
-    const emailInput = wrapper.find("#email");
-    const passwordInput = wrapper.find("#password");
+        expect(submitButton).toHaveProperty('disabled', true);
 
-    emailInput.simulate("change", {
-      target: { name: "email", value: "Larry@email.com" },
+        // Simulate entering a value in the password input
+        const passwordInput = screen.getByTestId("password");
+        fireEvent.change(passwordInput, { target: { value: "password123" } });
+
+        expect(submitButton).not.toHaveProperty('disabled', true);
     });
-
-    let submitInput = wrapper.find("form input[type='submit']");
-
-    expect(submitInput.prop("disabled")).toEqual(true);
-
-    passwordInput.simulate("change", {
-      target: { name: "password", value: "123456789" },
-    });
-
-    submitInput = wrapper.find("form input[type='submit']");
-    expect(submitInput.prop("disabled")).toEqual(false);
-  });
-});
+})

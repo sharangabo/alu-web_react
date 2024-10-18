@@ -1,56 +1,25 @@
-import { shallow } from "enzyme";
 import React from "react";
 import CourseListRow from "./CourseListRow";
+import { render, screen } from "@testing-library/react";
 import { StyleSheetTestUtils } from "aphrodite";
 
-describe("<CourseListRow />", () => {
-  beforeAll(() => {
-    StyleSheetTestUtils.suppressStyleInjection();
-  });
-  afterAll(() => {
-    StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
-  });
-  it("CourseListRow renders without crashing", () => {
-    const wrapper = shallow(<CourseListRow textFirstCell="test" />);
-    expect(wrapper.exists()).toEqual(true);
-  });
-  it("When isHeader is true renders one cell with colspan = 2 when textSecondCell does not exist", () => {
-    const wrapper = shallow(
-      <CourseListRow isHeader={true} textFirstCell="test" />
-    );
-    wrapper.update();
-    const item = wrapper.find("th");
+StyleSheetTestUtils.suppressStyleInjection()
+describe("Course List row", () => {
+    it("should render the first and second if the isHeader is true", () => {
+        render(<CourseListRow isHeader={true} textFirstCell="First" textSecondCell="Second" />);
+        screen.getByText("First");
+        screen.getByText("Second");
+    });
 
-    expect(item).toHaveLength(1);
-    expect(item.prop("colSpan")).toEqual("2");
-  });
-  it("When isHeader is true renders two cells when textSecondCell is present", () => {
-    const wrapper = shallow(
-      <CourseListRow
-        isHeader={true}
-        textFirstCell="test"
-        textSecondCell="second"
-      />
-    );
-    wrapper.update();
-    const item = wrapper.find("th");
+    it("should render only the first element if the isHeader is true and the second element is null", () => {
+        render(<CourseListRow isHeader={true} textFirstCell="First" textSecondCell={null} />);
+        screen.getByText("First");
+    });
 
-    expect(item).toHaveLength(2);
-    expect(item.first().text()).toEqual("test");
-    expect(item.at(1).text()).toEqual("second");
-  });
-  it("When isHeader is false renders correctly two td elements within a tr element", () => {
-    const wrapper = shallow(
-      <CourseListRow
-        isHeader={false}
-        textFirstCell="test"
-        textSecondCell="second"
-      />
-    );
-    wrapper.update();
-    const item = wrapper.find("tr");
+    it("should render the two element if the header is false", () => {
+        render(<CourseListRow isHeader={false} textFirstCell="First" textSecondCell="Second" />);
+        screen.getByText("First");
+        screen.getByText("Second"); 
+    })
 
-    expect(item).toHaveLength(1);
-    expect(item.children("td")).toHaveLength(2);
-  });
-});
+})

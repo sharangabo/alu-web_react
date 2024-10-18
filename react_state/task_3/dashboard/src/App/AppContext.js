@@ -1,4 +1,4 @@
-import React from "react";
+import { createContext } from "react";
 
 export const user = {
   email: "",
@@ -8,6 +8,6 @@ export const user = {
 
 export const logOut = () => {};
 
-const AppContext = React.createContext({ user, logOut });
+const AppContext = createContext({ user, logOut });
 
 export default AppContext;

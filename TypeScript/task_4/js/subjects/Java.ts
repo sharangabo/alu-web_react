@@ -1,17 +1,16 @@
 namespace Subjects {
     export interface Teacher {
-      experienceTeachingJava?: number;
+        experienceTeacherJava?: number
     }
-  
+
     export class Java extends Subject {
-      getRequirements(): string {
-        return "Here is the list of requirements for Java";
-      }
-      getAvailableTeacher(): string {
-        if (!this.teacher.experienceTeachingJava) {
-          return "No available teacher";
+        getRequirements() {
+            return "Here is the list of requirements for Java"
         }
-        return `Available Teacher: ${this.teacher.firstName}`;
-      }
+        getAvailableTeacher() {
+            if (this.teacher.experienceTeacherJava) return `The available Teacher: ${this.teacher.firstName}`;
+            return 'No available teacher'
+        }
     }
-  }
+
+}

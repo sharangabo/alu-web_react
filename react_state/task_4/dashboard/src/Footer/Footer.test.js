@@ -1,38 +1,18 @@
-import { shallow, mount } from "enzyme";
-import React from "react";
+import AppContext from '../App/AppContext';
 import Footer from "./Footer";
-import AppContext from "../App/AppContext";
-import { user, logOut } from "../App/AppContext";
+import { render, screen } from "@testing-library/react";
 
-describe("<Footer />", () => {
-  it("Footer renders without crashing", () => {
-    const wrapper = shallow(<Footer />);
-    expect(wrapper.exists()).toEqual(true);
-  });
-  it("Verify that the components at the very least render the text “Copyright”", () => {
-    const wrapper = mount(<Footer />);
-    expect(wrapper.find("div.footer p")).toHaveLength(1);
-    expect(wrapper.find("div.footer p").text()).toContain("Copyright");
-  });
 
-  it("verify that the link is not displayed when the user is logged out within the context", () => {
-    const wrapper = mount(
-      <AppContext.Provider value={{ user, logOut }}>
-        <Footer />
-      </AppContext.Provider>
-    );
-    expect(wrapper.find("div.footer a")).toHaveLength(0);
-  });
+describe("Footer", () => {
+    it("should render the footer element correctly when user is logged in", () => {
+        render(<AppContext.Provider value={{ user: {isLoggedIn: true} }}><Footer /> </AppContext.Provider>);
+        screen.getByText(/Copyright/i);
+        screen.getByText('contact us');
+    });
 
-  it("verify that the link is displayed when the user is logged in within the context", () => {
-    const wrapper = mount(
-      <AppContext.Provider
-        value={{ user: { ...user, isLoggedIn: true }, logOut }}
-      >
-        <Footer />
-      </AppContext.Provider>
-    );
-    expect(wrapper.find("div.footer a")).toHaveLength(1);
-    expect(wrapper.find("div.footer a").text()).toEqual("Contact us");
-  });
-});
+    it("should render the footer element correctly when user is logged out", () => {
+        render(<AppContext.Provider value={{ user: {isLoggedIn: false} }}><Footer /> </AppContext.Provider>);
+        screen.getByText(/Copyright/i);
+        expect(screen.queryByText('contact us')).toBeNull();
+    });
+})

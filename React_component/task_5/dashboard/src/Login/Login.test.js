@@ -1,20 +1,13 @@
-import React from 'react';
-import { shallow } from 'enzyme';
-import Login from './Login';
+import React from "react";
+import Login from "./Login";
+import { render, screen } from "@testing-library/react";
 
-describe('<Login />', () => {
-    it('renders an <Login /> component checking for App-Login', () => {
-        const wrapper = shallow(<Login />);
-        expect(wrapper.find('div.App-body')).toHaveLength(1);
-    });
 
-    it('renders an <Login /> component checking for input', () => {
-        const wrapper = shallow(<Login />);
-        expect(wrapper.find('div.App-body input')).toHaveLength(2);
-    });
+describe("login", () => {
+    it("should render the login component", () => {
+        render(<Login />);
+        screen.getByTestId("email");
+        screen.getByTestId("password");
 
-    it('renders an <Login /> component checking for label', () => {
-        const wrapper = shallow(<Login />);
-        expect(wrapper.find('div.App-body label')).toHaveLength(2);
-    });
-});
+    })
+})
